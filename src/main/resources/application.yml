@@ -1,0 +1,27 @@
+rainingsince:
+  version-enable: false
+
+spring:
+  profiles:
+    active: dev
+jasypt:
+  encryptor:
+    password: eszxdrtfc!!!
+
+---
+
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://39.105.81.49:3306/website?characterEncoding=utf-8&useSSL=false
+    username: ENC(s+DMTZgjEtfiV1SemCy/qQ==)
+    password: ENC(tpFpIxfPP3VyM0qmypXLxIVAyGY1MArd)
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+server:
+  port: 8080
+---
+spring:
+  profiles: pro
