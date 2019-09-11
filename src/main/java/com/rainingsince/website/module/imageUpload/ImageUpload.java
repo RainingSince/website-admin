@@ -31,7 +31,7 @@ public class ImageUpload {
 
 
     private ResponseEntity saveFile(MultipartFile multipartFile) throws IOException {
-        String baseUrl = "http://caodebo.com:8080/";
+        String baseUrl = "http://note.caodebo.com/";
         String[] fileAbsolutePath = {};
         String fileName = multipartFile.getOriginalFilename();
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
