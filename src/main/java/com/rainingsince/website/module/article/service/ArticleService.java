@@ -10,6 +10,9 @@ import com.rainingsince.website.module.article.mapper.ArticleMapper;
 import com.rainingsince.website.module.articleTags.entity.ArticleTagsEntity;
 import com.rainingsince.website.module.articleTags.service.ArticleTagsService;
 import com.rainingsince.website.module.catalog.error.CatalogError;
+import com.rainingsince.website.module.catalog.service.CatalogService;
+import com.rainingsince.website.module.tags.entity.TagsEntity;
+import com.rainingsince.website.module.tags.service.TagsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,15 +30,27 @@ public class ArticleService extends
         ServiceImpl<ArticleMapper, ArticleEntity> {
 
     private ArticleTagsService articleTagsService;
+    private TagsService tagsService;
+    private CatalogService catalogService;
 
     public Long saveArticleTags(String id, List<String> permissions) {
         return articleTagsService.saveArticleTags(id, permissions);
     }
 
+    @Override
+    public List<ArticleEntity> list() {
+        List<ArticleEntity> list = super.list();
+        list.forEach(item -> {
+            item.setTagList(articleTagsService.listTagsByArticleId(item.getId()).stream()
+                    .map(id -> tagsService.getById(id)).map(TagsEntity::getName).collect(Collectors.toList()));
+            item.setCatalogName(catalogService.getById(item.getCatalogId()).getName());
+        });
+        return list;
+    }
 
     @Override
     public ArticleEntity getById(Serializable id) {
-        List<String>  permissionList = articleTagsService.listTagsByArticleId(id);
+        List<String> permissionList = articleTagsService.listTagsByArticleId(id);
         ArticleEntity articleEntity = super.getById(id);
         articleEntity.setTagList(permissionList);
         return articleEntity;
@@ -47,7 +63,13 @@ public class ArticleService extends
     }
 
     public IPage<ArticleEntity> pages(ArticleEntity catalog) {
-        return page(catalog.toPage(), new QueryWrapper<>(catalog));
+        IPage<ArticleEntity> page = page(catalog.toPage(), new QueryWrapper<>(catalog));
+        page.getRecords().forEach(item -> {
+            item.setTagList(articleTagsService.listTagsByArticleId(item.getId()).stream()
+                    .map(id -> tagsService.getById(id)).map(TagsEntity::getName).collect(Collectors.toList()));
+            item.setCatalogName(catalogService.getById(item.getCatalogId()).getName());
+        });
+        return page;
     }
 
     public ResponseEntity saveNotExit(ArticleEntity entity) {

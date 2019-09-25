@@ -4,6 +4,8 @@ rainingsince:
 spring:
   profiles:
     active: dev
+  jackson:
+    date-format: YYYY-MM-DD
 jasypt:
   encryptor:
     password: eszxdrtfc!!!
@@ -14,8 +16,8 @@ spring:
   profiles: dev
   datasource:
     url: jdbc:mysql://39.105.81.49:3306/website?characterEncoding=utf-8&useSSL=false
-    username: ENC(s+DMTZgjEtfiV1SemCy/qQ==)
-    password: ENC(tpFpIxfPP3VyM0qmypXLxIVAyGY1MArd)
+    username: ENC(GooB1Ngyhhgs64yJerZ9nw==)
+    password: ENC(YwdzA1tsUB/jrfqXfOgj1c5NpOzK/bpJ)
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
 

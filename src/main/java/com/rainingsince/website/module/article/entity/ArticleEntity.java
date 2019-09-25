@@ -17,6 +17,8 @@ public class ArticleEntity extends BaseData {
     private String content;
 
     @TableField(exist = false)
+    private String catalogName;
+    @TableField(exist = false)
     private List<String> tagList;
 
 }
