@@ -27,6 +27,9 @@ public class ArticleTagsService
     }
 
     public Long saveArticleTags(Serializable articleId, List<String> tags) {
+        QueryWrapper<ArticleTagsEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("article_id", articleId);
+        this.remove(wrapper);
         return tags.stream().map(id -> {
             ArticleTagsEntity insert = new ArticleTagsEntity();
             insert.setTagId(id);

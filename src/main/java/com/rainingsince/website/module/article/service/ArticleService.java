@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.rainingsince.admin.user.service.UserService;
 import com.rainingsince.web.response.ResponseBuilder;
 import com.rainingsince.website.module.article.entity.ArticleEntity;
 import com.rainingsince.website.module.article.mapper.ArticleMapper;
@@ -34,6 +35,7 @@ public class ArticleService extends
     private ArticleTagsService articleTagsService;
     private TagsService tagsService;
     private CatalogService catalogService;
+    private UserService userService;
 
     public Long saveArticleTags(String id, List<String> permissions) {
         return articleTagsService.saveArticleTags(id, permissions);
@@ -55,6 +57,7 @@ public class ArticleService extends
     public ArticleEntity getById(Serializable id) {
         List<String> permissionList = articleTagsService.listTagsByArticleId(id);
         ArticleEntity articleEntity = super.getById(id);
+        articleEntity.setAuthor(userService.getById(articleEntity.getCreateBy()).getName());
         articleEntity.setTagList(permissionList);
         return articleEntity;
     }
@@ -62,6 +65,9 @@ public class ArticleService extends
     @Override
     public boolean save(ArticleEntity entity) {
         entity.setId(IdWorker.getIdStr());
+        if (entity.getTagList().size() > 0) {
+            saveArticleTags(entity.getId(), entity.getTagList());
+        }
         return super.save(entity);
     }
 
@@ -81,6 +87,7 @@ public class ArticleService extends
             item.setTagList(articleTagsService.listTagsByArticleId(item.getId()).stream()
                     .map(id -> tagsService.getById(id)).map(TagsEntity::getName).collect(Collectors.toList()));
             item.setCatalogName(catalogService.getById(item.getCatalogId()).getName());
+            item.setAuthor(userService.getById(item.getCreateBy()).getName());
         });
         return page;
     }
@@ -92,6 +99,7 @@ public class ArticleService extends
 
     public ResponseEntity updateNotExit(ArticleEntity entity) {
         if (isExit(entity)) return ResponseBuilder.error(CatalogError.USER_NAME_EXIT);
+        saveArticleTags(entity.getId(), entity.getTagList());
         return ResponseBuilder.ok(updateById(entity));
     }
 
