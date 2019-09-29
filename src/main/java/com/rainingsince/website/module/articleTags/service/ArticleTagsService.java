@@ -40,6 +40,12 @@ public class ArticleTagsService
                 .stream().map(ArticleTagsEntity::getTagId).collect(Collectors.toList());
     }
 
+
+    public List<String> listArticlesByTags(List<String> tags) {
+        return list(new QueryWrapper<ArticleTagsEntity>().in("tag_id", tags))
+                .stream().map(ArticleTagsEntity::getTagId).collect(Collectors.toList());
+    }
+
     public List<String> listTagsByArticleIds(List<String> articleIds) {
         return list(new QueryWrapper<ArticleTagsEntity>().in("article_id", articleIds))
                 .stream().map(ArticleTagsEntity::getTagId).collect(Collectors.toList());

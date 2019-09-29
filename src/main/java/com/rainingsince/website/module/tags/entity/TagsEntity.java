@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 @TableName("tb_tags")
-public class TagsEntity  extends BaseData {
+public class TagsEntity extends BaseData {
     private String name;
+    private String catalogId;
 }

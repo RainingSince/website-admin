@@ -3,6 +3,7 @@ package com.rainingsince.website.module.tags.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rainingsince.web.response.ResponseBuilder;
 import com.rainingsince.website.module.articleTags.entity.ArticleTagsEntity;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional
@@ -29,6 +31,13 @@ public class TagsService extends ServiceImpl<TagsMapper, TagsEntity> {
     public boolean save(TagsEntity entity) {
         entity.setId(IdWorker.getIdStr());
         return super.save(entity);
+    }
+
+    public List<TagsEntity> list(String catalogId) {
+        QueryWrapper<TagsEntity> queryWrapper = new QueryWrapper<>();
+        if (StringUtils.isNotEmpty(catalogId))
+            queryWrapper.eq("catalog_id", catalogId);
+        return list(queryWrapper);
     }
 
     public IPage<TagsEntity> pages(TagsEntity catalog) {

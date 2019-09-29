@@ -3,6 +3,7 @@ package com.rainingsince.website.module.article.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rainingsince.web.response.ResponseBuilder;
 import com.rainingsince.website.module.article.entity.ArticleEntity;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,14 +39,15 @@ public class ArticleService extends
         return articleTagsService.saveArticleTags(id, permissions);
     }
 
-    @Override
-    public List<ArticleEntity> list() {
-        List<ArticleEntity> list = super.list();
-        list.forEach(item -> {
-            item.setTagList(articleTagsService.listTagsByArticleId(item.getId()).stream()
-                    .map(id -> tagsService.getById(id)).map(TagsEntity::getName).collect(Collectors.toList()));
-            item.setCatalogName(catalogService.getById(item.getCatalogId()).getName());
-        });
+    public IPage<ArticleEntity> list(ArticleEntity entity) {
+        IPage<ArticleEntity> list;
+        QueryWrapper<ArticleEntity> wrapper = new QueryWrapper<>();
+        if ("hot".equals(entity.getType())) {
+            wrapper.orderBy(true, false, "sort");
+        } else {
+            wrapper.orderBy(true, false, "update_date");
+        }
+        list = this.page(entity.toPage(), wrapper);
         return list;
     }
 
@@ -63,7 +66,17 @@ public class ArticleService extends
     }
 
     public IPage<ArticleEntity> pages(ArticleEntity catalog) {
-        IPage<ArticleEntity> page = page(catalog.toPage(), new QueryWrapper<>(catalog));
+        QueryWrapper<ArticleEntity> wrapper = new QueryWrapper<>();
+
+        if (!StringUtils.isEmpty(catalog.getCatalogId())) {
+            wrapper.eq("catalog_id", catalog.getCatalogId());
+        }
+        IPage<ArticleEntity> page;
+        if (StringUtils.isEmpty(catalog.getTagId())) {
+            page = this.page(catalog.toPage(), wrapper);
+        } else {
+            page = baseMapper.getPageWithTag(catalog.toPage(), catalog.getTagId());
+        }
         page.getRecords().forEach(item -> {
             item.setTagList(articleTagsService.listTagsByArticleId(item.getId()).stream()
                     .map(id -> tagsService.getById(id)).map(TagsEntity::getName).collect(Collectors.toList()));

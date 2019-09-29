@@ -20,5 +20,9 @@ public class ArticleEntity extends BaseData {
     private String catalogName;
     @TableField(exist = false)
     private List<String> tagList;
+    @TableField(exist = false)
+    private String tagId;
+    @TableField(exist = false)
+    private String type;
 
 }

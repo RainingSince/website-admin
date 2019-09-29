@@ -17,9 +17,9 @@ public class TagsController {
 
     private TagsService tagsService;
 
-    @GetMapping("/list")
-    public ResponseEntity getAllRoles() {
-        return ResponseBuilder.ok(tagsService.list());
+    @GetMapping("/list/{catalogId}")
+    public ResponseEntity getAllRoles(@PathVariable("catalogId") String catalogId) {
+        return ResponseBuilder.ok(tagsService.list(catalogId));
     }
 
     @GetMapping()
