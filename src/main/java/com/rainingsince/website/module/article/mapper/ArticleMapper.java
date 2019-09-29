@@ -6,7 +6,6 @@ import com.rainingsince.website.module.article.entity.ArticleEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import sun.jvm.hotspot.debugger.Page;
 
 @Mapper
 public interface ArticleMapper extends BaseMapper<ArticleEntity> {
