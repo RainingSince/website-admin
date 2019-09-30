@@ -41,7 +41,11 @@ public class TagsService extends ServiceImpl<TagsMapper, TagsEntity> {
     }
 
     public IPage<TagsEntity> pages(TagsEntity catalog) {
-        return page(catalog.toPage(), new QueryWrapper<>(catalog));
+        QueryWrapper<TagsEntity> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotEmpty(catalog.getName())) {
+            wrapper.like("name", catalog.getName());
+        }
+        return page(catalog.toPage(), wrapper);
     }
 
     public ResponseEntity saveNotExit(TagsEntity entity) {

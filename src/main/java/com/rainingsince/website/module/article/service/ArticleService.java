@@ -77,6 +77,10 @@ public class ArticleService extends
         if (!StringUtils.isEmpty(catalog.getCatalogId())) {
             wrapper.eq("catalog_id", catalog.getCatalogId());
         }
+        if (StringUtils.isNotEmpty(catalog.getName())) {
+            wrapper.like("name", catalog.getName());
+        }
+
         IPage<ArticleEntity> page;
         if (StringUtils.isEmpty(catalog.getTagId())) {
             page = this.page(catalog.toPage(), wrapper);
