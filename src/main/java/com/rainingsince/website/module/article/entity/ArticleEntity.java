@@ -23,6 +23,8 @@ public class ArticleEntity extends BaseData {
     @TableField(exist = false)
     private List<String> tagList;
     @TableField(exist = false)
+    private List<String> tagIds;
+    @TableField(exist = false)
     private String tagId;
     @TableField(exist = false)
     private String type;

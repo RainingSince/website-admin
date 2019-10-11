@@ -65,8 +65,8 @@ public class ArticleService extends
     @Override
     public boolean save(ArticleEntity entity) {
         entity.setId(IdWorker.getIdStr());
-        if (entity.getTagList().size() > 0) {
-            saveArticleTags(entity.getId(), entity.getTagList());
+        if (entity.getTagIds().size() > 0) {
+            saveArticleTags(entity.getId(), entity.getTagIds());
         }
         return super.save(entity);
     }
@@ -88,7 +88,8 @@ public class ArticleService extends
             page = baseMapper.getPageWithTag(catalog.toPage(), catalog.getTagId());
         }
         page.getRecords().forEach(item -> {
-            item.setTagList(articleTagsService.listTagsByArticleId(item.getId()).stream()
+            item.setTagIds(articleTagsService.listTagsByArticleId(item.getId()));
+            item.setTagList(item.getTagIds().stream()
                     .map(id -> tagsService.getById(id)).map(TagsEntity::getName).collect(Collectors.toList()));
             item.setCatalogName(catalogService.getById(item.getCatalogId()).getName());
             item.setAuthor(userService.getById(item.getCreateBy()).getName());
@@ -103,7 +104,7 @@ public class ArticleService extends
 
     public ResponseEntity updateNotExit(ArticleEntity entity) {
         if (isExit(entity)) return ResponseBuilder.error(CatalogError.USER_NAME_EXIT);
-        saveArticleTags(entity.getId(), entity.getTagList());
+        saveArticleTags(entity.getId(), entity.getTagIds());
         return ResponseBuilder.ok(updateById(entity));
     }
 
