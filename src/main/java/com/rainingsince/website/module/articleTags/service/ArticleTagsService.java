@@ -29,6 +29,7 @@ public class ArticleTagsService
     public Long saveArticleTags(Serializable articleId, List<String> tags) {
         QueryWrapper<ArticleTagsEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("article_id", articleId);
+        wrapper.eq("deleted", '0');
         this.remove(wrapper);
         return tags.stream().map(id -> {
             ArticleTagsEntity insert = new ArticleTagsEntity();
@@ -39,18 +40,18 @@ public class ArticleTagsService
     }
 
     public List<String> listTagsByArticleId(Serializable articleId) {
-        return list(new QueryWrapper<ArticleTagsEntity>().eq("article_id", articleId))
+        return list(new QueryWrapper<ArticleTagsEntity>().eq("article_id", articleId).eq("deleted", '0'))
                 .stream().map(ArticleTagsEntity::getTagId).collect(Collectors.toList());
     }
 
 
     public List<String> listArticlesByTags(List<String> tags) {
-        return list(new QueryWrapper<ArticleTagsEntity>().in("tag_id", tags))
+        return list(new QueryWrapper<ArticleTagsEntity>().in("tag_id", tags).eq("deleted", '0'))
                 .stream().map(ArticleTagsEntity::getTagId).collect(Collectors.toList());
     }
 
     public List<String> listTagsByArticleIds(List<String> articleIds) {
-        return list(new QueryWrapper<ArticleTagsEntity>().in("article_id", articleIds))
+        return list(new QueryWrapper<ArticleTagsEntity>().in("article_id", articleIds).eq("deleted", '0'))
                 .stream().map(ArticleTagsEntity::getTagId).collect(Collectors.toList());
     }
 

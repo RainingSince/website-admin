@@ -58,7 +58,7 @@ public class ArticleService extends
         List<String> permissionList = articleTagsService.listTagsByArticleId(id);
         ArticleEntity articleEntity = super.getById(id);
         articleEntity.setAuthor(userService.getById(articleEntity.getCreateBy()).getName());
-        articleEntity.setTagList(permissionList);
+        articleEntity.setTagIds(permissionList);
         return articleEntity;
     }
 
