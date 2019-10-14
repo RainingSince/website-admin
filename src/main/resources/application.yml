@@ -5,7 +5,8 @@ spring:
   profiles:
     active: dev
   jackson:
-    date-format: YYYY-MM-DD
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
 jasypt:
   encryptor:
     password: eszxdrtfc!!!
