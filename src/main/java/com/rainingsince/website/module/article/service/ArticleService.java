@@ -80,7 +80,7 @@ public class ArticleService extends
         if (StringUtils.isNotEmpty(catalog.getName())) {
             wrapper.like("name", catalog.getName());
         }
-
+        wrapper.orderByDesc("update_date");
         IPage<ArticleEntity> page;
         if (StringUtils.isEmpty(catalog.getTagId())) {
             page = this.page(catalog.toPage(), wrapper);
