@@ -44,6 +44,7 @@ public class ArticleService extends
     public IPage<ArticleEntity> list(ArticleEntity entity) {
         IPage<ArticleEntity> list;
         QueryWrapper<ArticleEntity> wrapper = new QueryWrapper<>();
+        wrapper.select("id","name","remark","create_date","update_date","catalog_id","create_by");
         if ("hot".equals(entity.getType())) {
             wrapper.orderBy(true, false, "sort");
         } else {
@@ -80,6 +81,8 @@ public class ArticleService extends
         if (StringUtils.isNotEmpty(catalog.getName())) {
             wrapper.like("name", catalog.getName());
         }
+        wrapper.select("id","name","remark","create_date","update_date","catalog_id","create_by");
+
         wrapper.orderByDesc("update_date");
         IPage<ArticleEntity> page;
         if (StringUtils.isEmpty(catalog.getTagId())) {
