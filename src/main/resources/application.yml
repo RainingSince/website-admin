@@ -16,9 +16,9 @@ jasypt:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://39.105.81.49:3306/website?characterEncoding=utf-8&useSSL=false
-    username: ENC(GooB1Ngyhhgs64yJerZ9nw==)
-    password: ENC(YwdzA1tsUB/jrfqXfOgj1c5NpOzK/bpJ)
+    url: jdbc:mysql://47.104.158.140:3306/website?characterEncoding=utf-8&useSSL=false
+    username: ENC(3kodtUkYUR9V+6fO9o/Y9w==)
+    password: ENC(eAkXPO+QQQrK7BWvaCirSl5ei7zXLS9M)
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -29,8 +29,8 @@ server:
 spring:
   profiles: pro
   datasource:
-    url: jdbc:mysql://39.105.81.49:3306/website?characterEncoding=utf-8&useSSL=false
-    username: ENC(GooB1Ngyhhgs64yJerZ9nw==)
-    password: ENC(YwdzA1tsUB/jrfqXfOgj1c5NpOzK/bpJ)
+    url: jdbc:mysql://47.104.158.140:3306/website?characterEncoding=utf-8&useSSL=false
+    username: ENC(3kodtUkYUR9V+6fO9o/Y9w==)
+    password: ENC(eAkXPO+QQQrK7BWvaCirSl5ei7zXLS9M)
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
